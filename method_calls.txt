@@ -1,0 +1,20 @@
+MineGroup.py(733): class AllProbabilities():
+MineGroup.py(733): class AllProbabilities():
+agent.py(417):     pygame.init()
+agent.py(424):         game = Game()
+agent.py(425):         game.new()
+agent.py(15):         self.groups = AllGroups()
+MineGroup.py(71):         self.hashes = set()
+MineGroup.py(550):         self.leftover_cells = set()
+agent.py(429):             agent.play()
+agent.py(378):         self.generate_all_covered()
+agent.py(28):         self.covered_tiles = self.board.get_covered_tiles()
+agent.py(379):         self.generate_remaining_mines()
+agent.py(33):         self.remaining_mines = self.board.calculate_remaining_mines()
+agent.py(380):         self.generate_groups()
+agent.py(40):         self.groups.reset()
+MineGroup.py(88):         self.hashes = set()
+agent.py(381):         self.generate_unaccounted()
+agent.py(382):         tiles = self.make_decision()
+agent.py(384):             self.game.draw()  # Draw the board
+agent.py(446):     pygame.quit()

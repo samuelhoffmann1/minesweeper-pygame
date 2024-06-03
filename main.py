@@ -1,4 +1,6 @@
 import pygame
+pygame.init() 
+import pdb
 from settings import *
 from sprites import *
 
@@ -11,15 +13,17 @@ class Game:
 
     def new(self):
         self.board = Board()
-        self.board.display_board()
-
-    def run(self):
+        # self.board.display_board()
         self.playing = True
-        while self.playing:
-            self.clock.tick(FPS)
-            self.events()
-            self.draw()
-        else:
+        self.win = False
+        
+
+    def run(self, tile):
+        self.playing = True
+        self.clock.tick(FPS)
+        self.process_tile(tile)
+        self.draw()
+        if not self.playing or self.check_win():
             self.end_screen()
 
     def draw(self):
@@ -33,60 +37,33 @@ class Game:
                 if tile.type != "X" and not tile.revealed:
                     return False
         return True
+    
+    def process_tile(self, tile):
+        if not tile.flagged:
+            # dig and check if exploded
+            if not self.board.dig(tile.x // TILESIZE, tile.y // TILESIZE):
+                # explode
+                for row in self.board.board_list:
+                    for t in row:
+                        if t.flagged and t.type != "X":
+                            t.flagged = False
+                            t.revealed = True
+                            t.image = tile_not_mine
+                        elif t.type == "X":
+                            t.revealed = True
+                self.playing = False
 
-    def events(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit(0)
-
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                mx, my = pygame.mouse.get_pos()
-                mx //= TILESIZE
-                my //= TILESIZE
-
-                if event.button == 1:
-                    if not self.board.board_list[mx][my].flagged:
-                        # dig and check if exploded
-                        if not self.board.dig(mx, my):
-                            # explode
-                            for row in self.board.board_list:
-                                for tile in row:
-                                    if tile.flagged and tile.type != "X":
-                                        tile.flagged = False
-                                        tile.revealed = True
-                                        tile.image = tile_not_mine
-                                    elif tile.type == "X":
-                                        tile.revealed = True
-                            self.playing = False
-
-                if event.button == 3:
-                    if not self.board.board_list[mx][my].revealed:
-                        self.board.board_list[mx][my].flagged = not self.board.board_list[mx][my].flagged
-
-                if self.check_win():
-                    self.win = True
-                    self.playing = False
-                    for row in self.board.board_list:
-                        for tile in row:
-                            if not tile.revealed:
-                                tile.flagged = True
+        if self.check_win():
+            self.win = True
+            self.playing = False
+            for row in self.board.board_list:
+                for t in row:
+                    if not t.revealed:
+                        t.flagged = True
 
     def end_screen(self):
-        while True:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    quit(0)
+       return
 
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    return
-
-
-game = Game()
-while True:
-    game.new()
-    game.run()
 
 
 

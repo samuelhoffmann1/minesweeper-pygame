@@ -1,0 +1,972 @@
+agent.py(1): import pygame
+<frozen importlib._bootstrap>(446): <frozen importlib._bootstrap>(447): <frozen importlib._bootstrap>(451): <frozen importlib._bootstrap>(452): <frozen importlib._bootstrap>(454): agent.py(2): from settings import *
+<frozen importlib._bootstrap>(446): <frozen importlib._bootstrap>(447): <frozen importlib._bootstrap>(451): <frozen importlib._bootstrap>(452): <frozen importlib._bootstrap>(454): agent.py(3): from sprites import *
+<frozen importlib._bootstrap>(446): <frozen importlib._bootstrap>(447): <frozen importlib._bootstrap>(451): <frozen importlib._bootstrap>(452): <frozen importlib._bootstrap>(454): agent.py(4): from main import Game
+<frozen importlib._bootstrap>(446): <frozen importlib._bootstrap>(447): <frozen importlib._bootstrap>(451): <frozen importlib._bootstrap>(452): <frozen importlib._bootstrap>(454): agent.py(5): from MineGroup import *
+MineGroup.py(1): import math
+MineGroup.py(2): import itertools
+MineGroup.py(3): from dataclasses import dataclass
+MineGroup.py(4): from settings import *
+MineGroup.py(5): from sprites import *
+MineGroup.py(7): from main import Game
+MineGroup.py(9): class MineGroup:
+MineGroup.py(9): class MineGroup:
+MineGroup.py(10):     ''' A MineGroup is a set of cells that are known
+MineGroup.py(17):     def __init__(self, cells, mines, group_type="exactly"):
+MineGroup.py(35):     def is_all_safe(self):
+MineGroup.py(40):     def is_all_mines(self):
+MineGroup.py(45):     def calculate_hash(self):
+MineGroup.py(55):     def __str__(self):
+MineGroup.py(64): class AllGroups:
+MineGroup.py(64): class AllGroups:
+MineGroup.py(65):     ''' Functions to handle a group of MineGroup object (groups and subgroups):
+MineGroup.py(69):     def __init__(self):
+MineGroup.py(85):     def reset(self):
+MineGroup.py(95):     def reset_clusters(self):
+MineGroup.py(101):     def next_non_clustered_groups(self):
+MineGroup.py(110):     def add_group(self, new_group):
+MineGroup.py(118):     def generate_frontier(self):
+MineGroup.py(127):     def __iter__(self):
+MineGroup.py(132):     def exact_groups(self):
+MineGroup.py(137):     def subgroups(self):
+MineGroup.py(143):     def generate_subgroup_at_least(self):
+MineGroup.py(169):     def generate_subgroup_no_more_than(self):
+MineGroup.py(190):     def __str__(self):
+MineGroup.py(198): def all_mines_positions(cells_count, mines_to_set):
+MineGroup.py(230): class GroupCluster:
+MineGroup.py(230): class GroupCluster:
+MineGroup.py(231):     ''' GroupCluster are several MineGroups connected together. All groups
+MineGroup.py(237):     def __init__(self, group=None):
+MineGroup.py(272):     def add_group(self, group):
+MineGroup.py(284):     def overlap(self, group):
+MineGroup.py(289):     def solve_cluster(self, remaining_mines):
+MineGroup.py(380):     def calculate_frequencies(self):
+MineGroup.py(409):     def calculate_next_safe(self):
+MineGroup.py(444):     def safe_cells(self):
+MineGroup.py(450):     def mine_cells(self):
+MineGroup.py(456):     def calculate_solution_weights(self, covered_cells, remaining_mines):
+MineGroup.py(472):     def possible_mine_counts(self):
+MineGroup.py(509):     def mines_in_cells(self, cells_to_look_at):
+MineGroup.py(535):     def __str__(self):
+MineGroup.py(541): class AllClusters:
+MineGroup.py(541): class AllClusters:
+MineGroup.py(542):     ''' Class that holds all clusters and leftovers data
+MineGroup.py(545):     def __init__(self, covered_cells, remaining_mines, game):
+MineGroup.py(565):     def calculate_all(self):
+MineGroup.py(579):     def calculate_leftovers(self):
+MineGroup.py(653):     def calculate_all_next_safe(self):
+MineGroup.py(659):     def mines_in_leftover_part(self, cell_count):
+MineGroup.py(696): @dataclass
+MineGroup.py(697): class CellProbability:
+MineGroup.py(696): @dataclass
+MineGroup.py(698):     ''' Data about mine probability for one cell
+MineGroup.py(701):     cell: tuple
+MineGroup.py(704):     source: str
+MineGroup.py(707):     mine_chance: float
+MineGroup.py(710):     opening_chance: float = 0
+MineGroup.py(713):     frontier: int = 0
+MineGroup.py(717):     csp_next_safe: int = 0
+MineGroup.py(720):     next_move_safe_chance: float = 0
+MineGroup.py(723):     next_safe_count: float = 0
+MineGroup.py(727):     next_survival: float = 0
+MineGroup.py(730):     shortlisted: int = 0
+MineGroup.py(696): @dataclass
+MineGroup.py(697): class CellProbability:
+MineGroup.py(733): class AllProbabilities():
+MineGroup.py(733): class AllProbabilities():
+MineGroup.py(734):     '''Class to work with probability-based information about cells
+MineGroup.py(738):     def __init__(self):
+MineGroup.py(745):     def get_luckiest(self):
+<frozen importlib._bootstrap>(446): <frozen importlib._bootstrap>(447): <frozen importlib._bootstrap>(451): <frozen importlib._bootstrap>(452): <frozen importlib._bootstrap>(454): agent.py(6): import matplotlib.pyplot as plt
+<frozen importlib._bootstrap>(446): <frozen importlib._bootstrap>(447): <frozen importlib._bootstrap>(451): <frozen importlib._bootstrap>(452): <frozen importlib._bootstrap>(454): agent.py(7): import numpy as np
+agent.py(9): class MinesweeperAgent:
+agent.py(9): class MinesweeperAgent:
+agent.py(10):     def __init__(self, game):
+agent.py(25):     def generate_all_covered(self):
+agent.py(30):     def generate_remaining_mines(self):
+agent.py(35):     def generate_groups(self):
+agent.py(72):     def generate_clusters(self):
+agent.py(107):     def generate_unaccounted(self):
+agent.py(186):     def method_groups(self):
+agent.py(218):     def method_csp(self):
+agent.py(237):     def calculate_probabilities(self):
+agent.py(293):     def calculate_opening_chances(self):
+agent.py(315):     def calculate_frontier(self):
+agent.py(326):     def calculate_next_safe_csp(self):
+agent.py(338):     def make_decision(self):
+agent.py(377):     def play(self):
+agent.py(396):     def find_mines(self):
+agent.py(405):     def basic(self):
+agent.py(416): if __name__ == "__main__":
+agent.py(417):     pygame.init()
+agent.py(418):     random.seed(1)
+agent.py(419):     wins = 0  # Counter for wins
+agent.py(420):     losses = 0  # Counter for losses
+agent.py(421):     total_random_selections = 0  # Counter for total random tile selections
+agent.py(423):     for i in range(1):  # Play 100 games
+agent.py(424):         game = Game()
+agent.py(425):         game.new()
+agent.py(426):         agent = MinesweeperAgent(game)
+agent.py(11):         self.game = game
+agent.py(12):         self.board = game.board
+agent.py(13):         self.remaining_mines = AMOUNT_MINES
+agent.py(14):         self.covered_tiles = ROWS * COLS
+agent.py(15):         self.groups = AllGroups()
+MineGroup.py(71):         self.hashes = set()
+MineGroup.py(73):         self.mine_groups = []
+MineGroup.py(80):         self.count_groups = None
+MineGroup.py(83):         self.frontier = []
+agent.py(16):         self.all_clusters = AllClusters(self.covered_tiles,
+agent.py(17):                                            self.remaining_mines, self.game)
+agent.py(16):         self.all_clusters = AllClusters(self.covered_tiles,
+MineGroup.py(547):         self.clusters = []
+MineGroup.py(550):         self.leftover_cells = set()
+MineGroup.py(553):         self.leftover_mines_chances = {}
+MineGroup.py(556):         self.leftover_mine_chance = None
+MineGroup.py(559):         self.covered_cells = covered_cells
+MineGroup.py(560):         self.remaining_mines = remaining_mines
+MineGroup.py(563):         self.game = game
+agent.py(18):         self.probability = None
+agent.py(19):         self.unaccounted_group = None
+agent.py(20):         self.bruteforce_solutions = None
+agent.py(21):         self.first_move = True
+agent.py(22):         self.last_move_info = None
+agent.py(23):         self.random_selections = 0  # Counter for random tile selections
+agent.py(427):         print(f"Game {i + 1}")
+agent.py(428):         while game.playing:
+agent.py(429):             agent.play()
+agent.py(378):         self.generate_all_covered()
+agent.py(28):         self.covered_tiles = self.board.get_covered_tiles()
+agent.py(379):         self.generate_remaining_mines()
+agent.py(33):         self.remaining_mines = self.board.calculate_remaining_mines()
+agent.py(380):         self.generate_groups()
+agent.py(40):         self.groups.reset()
+MineGroup.py(88):         self.hashes = set()
+MineGroup.py(89):         self.mine_groups = []
+MineGroup.py(93):         self.frontier = []
+agent.py(43):         for row in self.board.board_list:
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(43):         for row in self.board.board_list:
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(43):         for row in self.board.board_list:
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(43):         for row in self.board.board_list:
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(43):         for row in self.board.board_list:
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(43):         for row in self.board.board_list:
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(43):         for row in self.board.board_list:
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(43):         for row in self.board.board_list:
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(43):         for row in self.board.board_list:
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(43):         for row in self.board.board_list:
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(43):         for row in self.board.board_list:
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(43):         for row in self.board.board_list:
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(43):         for row in self.board.board_list:
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(43):         for row in self.board.board_list:
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(43):         for row in self.board.board_list:
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(43):         for row in self.board.board_list:
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(47):                 if not tile.number or not tile.revealed:
+agent.py(48):                     continue
+agent.py(44):             for tile in row:
+agent.py(43):         for row in self.board.board_list:
+agent.py(381):         self.generate_unaccounted()
+agent.py(113):         def coverage_attempt(accounted_cells, accounted_mines):
+agent.py(149):         self.unaccounted_group = None
+agent.py(153):         if len(self.covered_tiles) > 40:
+agent.py(154):             return
+agent.py(382):         tiles = self.make_decision()
+agent.py(339):         safe_tiles = []
+agent.py(341):         if self.first_move:
+agent.py(342):             self.first_move = False
+agent.py(343):             return [self.board.board_list[0][0]]
+agent.py(383):         for tile in tiles:
+agent.py(384):             self.game.draw()  # Draw the board
+agent.py(394):             self.game.run(tile)
+agent.py(383):         for tile in tiles:
+agent.py(430):             if not game.playing:
+agent.py(431):                 break
+agent.py(433):         if game.win:  # If the game was won, increment the wins counter
+agent.py(436):             losses += 1
+agent.py(438):         total_random_selections += agent.random_selections  # Add the number of random tile selections in this game to the total
+agent.py(423):     for i in range(1):  # Play 100 games
+agent.py(440):     win_percentage = (wins / (wins + losses)) * 100 if (wins + losses) > 0 else 0  # Calculate the win percentage, avoid division by zero
+agent.py(441):     average_random_selections = total_random_selections / 100  # Calculate the average number of random choices per game
+agent.py(443):     print("{:<20} {:<10} {:<10} {:<20} {:<25}".format('Wins', 'Losses', 'Win %', 'Total Random Selections', 'Avg Random Selections'))  # Print the table headers
+agent.py(444):     print("{:<20} {:<10} {:<10.2f} {:<20} {:<25.2f}".format(wins, losses, win_percentage, total_random_selections, average_random_selections))  # Print the table data
+agent.py(446):     pygame.quit()
